@@ -1,5 +1,14 @@
 cmake_minimum_required(VERSION 3.10)
-project(catimg)
+
+# Prefer clang for local builds when no compiler was explicitly selected.
+if(NOT DEFINED CMAKE_C_COMPILER AND NOT DEFINED ENV{CC})
+  find_program(CLANG_PATH NAMES clang)
+  if(CLANG_PATH)
+    set(CMAKE_C_COMPILER "${CLANG_PATH}" CACHE STRING "C compiler")
+  endif()
+endif()
+
+project(catimg C)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 

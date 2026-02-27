@@ -31,8 +31,15 @@ dnf -y install catimg
 ## Building
 
 ```sh
-cmake .
-make install
+cmake -S . -B build
+cmake --build build
+cmake --install build
+```
+
+`catimg` prefers `clang` by default when available. To use a different compiler:
+
+```sh
+cmake -S . -B build -DCMAKE_C_COMPILER=gcc
 ```
 
 ## Script Dependencies

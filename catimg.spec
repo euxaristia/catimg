@@ -8,7 +8,7 @@ URL:            https://github.com/posva/catimg
 Source0:        https://github.com/posva/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  cmake >= 2.8
-BuildRequires:  gcc
+BuildRequires:  clang
 
 %description
 %{name} is a little program written in C with no dependencies that prints
@@ -21,6 +21,7 @@ images in terminal. It supports JPEG, PNG, ICO and GIF formats.
 mkdir -p build
 pushd build
 %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+       -DCMAKE_C_COMPILER=clang \
        -DMAN_OUTPUT_PATH=%{_mandir}/man1 \
        ..
 %make_build
