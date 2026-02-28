@@ -23,7 +23,7 @@ jobs:
           # Note: Lower severity issues (1-3) are informational only
           # and include many false positives from standard library functions
           echo "=== High Severity Issues (Level 4-5) ==="
-          if grep -E '^\s*src/.*\[5\]|\[4\]' flawfinder-results.txt; then
+          if grep -E '^src/.*\s+\[5\]|^src/.*\s+\[4\]' flawfinder-results.txt; then
             echo "::error::High-severity security issues found!"
             exit 1
           fi
