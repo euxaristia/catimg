@@ -18,10 +18,18 @@ jobs:
       - name: Run flawfinder
         run: |
           flawfinder src/*.c src/*.h 2>&1 | tee flawfinder-results.txt
+
           # Check for high-severity issues (level 4 and 5)
+          # Note: Lower severity issues (1-3) are informational only
+          # and include many false positives from standard library functions
+          echo "=== High Severity Issues (Level 4-5) ==="
           if grep -E '\[5\]|\[4\]' flawfinder-results.txt; then
             echo "::error::High-severity security issues found!"
             exit 1
           fi
+          echo "No high-severity issues found."
+
           # Show summary
+          echo ""
+          echo "=== Flawfinder Summary ==="
           tail -15 flawfinder-results.txt
