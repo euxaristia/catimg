@@ -1,0 +1,27 @@
+name: Flawfinder
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  flawfinder:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install flawfinder
+        run: pip install flawfinder
+
+      - name: Run flawfinder
+        run: |
+          flawfinder src/*.c src/*.h 2>&1 | tee flawfinder-results.txt
+          # Check for high-severity issues (level 4 and 5)
+          if grep -E '\[5\]|\[4\]' flawfinder-results.txt; then
+            echo "::error::High-severity security issues found!"
+            exit 1
+          fi
+          # Show summary
+          tail -15 flawfinder-results.txt

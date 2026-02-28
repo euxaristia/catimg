@@ -1,0 +1,28 @@
+name: Cppcheck
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  cppcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install cppcheck
+        run: sudo apt-get update && sudo apt-get install -y cppcheck
+
+      - name: Run cppcheck
+        run: |
+          cppcheck --enable=all --inconclusive --std=c99 \
+            -Isrc \
+            --error-exitcode=1 \
+            src/*.c 2>&1 | tee cppcheck-results.txt
+          # Check for actual errors (not style warnings or third-party issues)
+          if grep -E '^src/.*: error:' cppcheck-results.txt | grep -v 'stb_image.h'; then
+            echo "::error::Real errors found in project code!"
+            exit 1
+          fi
