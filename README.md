@@ -31,8 +31,9 @@ dnf -y install catimg
 ## Building
 
 ```sh
-cmake .
-make install
+cmake -S . -B build
+cmake --build build
+cmake --install build
 ```
 
 ## Script Dependencies
